@@ -14,14 +14,14 @@ namespace REAL_ESTATE
         private static string targetURL { get; set; }
 
         //public static XmlNodeList callWebRequest(string url)
-        public static List<item> callWebRequest(string url)
+        public static List<dataItem> callWebRequest(string url)
         {
             targetURL = url;
             //Console.WriteLine(string.Format("API URL : {0}", targetURL));
 
             string responseFromServer = string.Empty;
             XmlNodeList Result = null;
-            List<item> itemResult = new List<item>();
+            List<dataItem> itemResult = new List<dataItem>();
             try
             {
                 WebRequest request = WebRequest.Create(targetURL);
@@ -42,10 +42,9 @@ namespace REAL_ESTATE
                 XmlElement xmlelement = xml.DocumentElement;
                 Result =  xmlelement.GetElementsByTagName("item");
 
-                int i = 0;
                 foreach(XmlNode xmlnode in Result)
                 {
-                    item tempItem = new item();
+                    dataItem tempItem = new dataItem();
                     //tempItem.거래금액 = xmlnode.Attributes["거래금액"].InnerText;
                     tempItem.거래금액 = xmlnode.SelectSingleNode("거래금액").InnerText;
                     tempItem.건축년도 = xmlnode.SelectSingleNode("건축년도").InnerText;

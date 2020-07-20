@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace REAL_ESTATE
 {
-    public class item 
+    public class dataItem 
     {
         public string 거래금액 { get; set; }
         public string 건축년도 { get; set; }
