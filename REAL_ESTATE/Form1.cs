@@ -24,6 +24,10 @@ namespace REAL_ESTATE
             InitializeComponent();
             init();
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
 
         public void init()
         {
@@ -92,6 +96,7 @@ namespace REAL_ESTATE
         {
             if (datas == null)
             {
+                cb_2.Items.Clear();
                 cb_2.Items.Add(" :: 시/군/구 :: ");
                 cb_2.SelectedIndex = 0;
             }
@@ -132,6 +137,7 @@ namespace REAL_ESTATE
                 cb_2.Items.Clear();
                 cb_2.Items.Add("  :: 시/군/구 :: ");
                 cb_2.SelectedIndex = 0;
+                btn_submit.Enabled = false;
             }
             else
             {
@@ -168,7 +174,7 @@ namespace REAL_ESTATE
         {
             if(cb_2.SelectedIndex == 0)
             {
-                
+                btn_submit.Enabled = false;
             }
             else
             {
@@ -179,17 +185,67 @@ namespace REAL_ESTATE
                 Console.WriteLine(full_address);
                 Console.WriteLine(selectedRegion.법정동코드_5자리);
                 */
+                btn_submit.Enabled = true;
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
+
+            //http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev?serviceKey=v6UmuoRyMk3IPiiJL315ErO%2FvbVLbs8UI2h%2FQ%2BSSixULwnOXzQZy7yvOcyL%2FrTFfSyJzFUiBLpN3smZrsu1mAg%3D%3D&pageNo=1&numOfRows=10&LAWD_CD=11110&DEAL_YMD=202005&
+            string url = "http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev";
+            string serviceKey = "v6UmuoRyMk3IPiiJL315ErO%2FvbVLbs8UI2h%2FQ%2BSSixULwnOXzQZy7yvOcyL%2FrTFfSyJzFUiBLpN3smZrsu1mAg%3D%3D";
+            string pageNo = "1";
+            string numOfRows = "100";
+            string LAWD_CD = "";
+            string DEAL_YMD = "";
+
             string full_address = string.Format("{0} {1}", cb_1.Text, cb_2.Text);
             dataAddress selectedRegion = address_ALL.Find(x => x.법정동명 == full_address);
 
             Console.WriteLine(full_address);
             Console.WriteLine(selectedRegion.법정동코드_5자리);
+
+            LAWD_CD = selectedRegion.법정동코드_5자리;
+            DEAL_YMD = string.Format("{0:yyyyMM}", dateTimePicker1.Value);
+
+
+            string API_URL = string.Format("{0}?serviceKey={1}&pageNo={2}&numOfRows={3}&LAWD_CD={4}&DEAL_YMD={5}", url, serviceKey, pageNo, numOfRows, LAWD_CD, DEAL_YMD);
+
+            List<dataItem> API_RESULT = CallAPI.callWebRequest(API_URL);
+            dataGridView1.Rows.Clear();
+
+            if (API_RESULT.Count > 0)
+            {
+                foreach (dataItem result in API_RESULT)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine(result.아파트);
+                    Console.WriteLine(string.Format("{0} {1} {2} {3}", cb_1.Text, cb_2.Text, result.도로명, Convert.ToInt32(result.도로명건물본번호코드)));
+                    Console.WriteLine(string.Format("{0} {1}", result.법정동.Trim(), Convert.ToInt32(result.법정동본번코드)));
+                    Console.WriteLine(string.Format("건축년도 : {0} / 전용면적 : {1}({2:.##}평)", result.건축년도, result.전용면적, (double)(Convert.ToDouble(result.전용면적) / 3.3)));
+                    Console.WriteLine(string.Format("거래일 : {0}년 {1}월 {2}일 / 거래금액 : {3}", result.년, result.월, result.일, result.거래금액));
+                }
+
+
+                drawGridView(API_RESULT);
+            }
+            
+
+        }
+
+        public void drawGridView(List<dataItem> API_RESULT)
+        {
+            foreach (dataItem result in API_RESULT)
+            {
+                dataGridView1.Rows.Add(result.아파트, result.층, result.건축년도, string.Format("{0:.##}({1:.##}평)", Convert.ToDouble(result.전용면적), (double)Convert.ToDouble(result.전용면적) / 3.3), string.Format("{0}년 {1}월 {2}일", result.년, result.월, result.일), result.거래금액);
+            }
+        }
+
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

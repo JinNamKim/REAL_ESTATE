@@ -72,7 +72,7 @@ namespace REAL_ESTATE
 
                     itemResult.Add(tempItem);
 
-                    Console.WriteLine(string.Format("API RESULT : {0}", tempItem.법정동));
+                    //Console.WriteLine(string.Format("API RESULT : {0}", tempItem.법정동));
                 }
 
             }
