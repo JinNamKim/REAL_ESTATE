@@ -20,7 +20,6 @@ namespace REAL_ESTATE
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //XmlNodeList XML_RESULT = CallAPI.callWebRequest("http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev?serviceKey=v6UmuoRyMk3IPiiJL315ErO%2FvbVLbs8UI2h%2FQ%2BSSixULwnOXzQZy7yvOcyL%2FrTFfSyJzFUiBLpN3smZrsu1mAg%3D%3D&pageNo=1&numOfRows=10&LAWD_CD=11110&DEAL_YMD=201512&");
             List<item> zzz = CallAPI.callWebRequest("http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev?serviceKey=v6UmuoRyMk3IPiiJL315ErO%2FvbVLbs8UI2h%2FQ%2BSSixULwnOXzQZy7yvOcyL%2FrTFfSyJzFUiBLpN3smZrsu1mAg%3D%3D&pageNo=1&numOfRows=10&LAWD_CD=11110&DEAL_YMD=201512&");
 
 

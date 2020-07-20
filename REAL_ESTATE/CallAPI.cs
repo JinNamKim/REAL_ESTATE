@@ -72,6 +72,8 @@ namespace REAL_ESTATE
                     tempItem.층 = xmlnode.SelectSingleNode("층").InnerText;
 
                     itemResult.Add(tempItem);
+
+                    Console.WriteLine(string.Format("API RESULT : {0}", tempItem.법정동));
                 }
 
             }
